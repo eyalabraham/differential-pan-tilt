@@ -7,12 +7,35 @@ The controller code is in module ```ptctrl.c```. The controller provides an inte
 ## System
 
 ```
- ASCII drawing
+ 
+  +-----+            +-------------+
+  |     |            |             |
+  | PC  |            | NEC V25 SBC +------------------------+
+  |     +--< UART >--+             |                        |
+  |     |            |             |       +------------+   |
+  |     |            |             +-<SPI>-+ A/D MAX186 |   |
+  |     |            |             |       +-+----------+   |
+  +-----+            +---+-----+---+         |              |
+                         |     |             |              |
+                     +---+-+ +-+---+         |              |
+                     |A4988| |A4988|         |              |
+                     +---+-+ +-+---+         |              |
+                         |     |       <Pan feedback>       |
+                     +---+-+ +-+---+         |              |
+                     | Pan | | Tilt|         |       <micro switch>
+                     +---+-+ +-+---+         |              |
+                         |     |             |              |
+                     +---+-----+-------------+--------------+---+
+                     |        Pan Tilt System                   |
+                     +------------------------------------------+
+
 ```
 
 ## Hardware
 
-Two TEAC 14769070-60 stepper motors, one for pan and one for tilt. Motor drivers use common micro-stepper driver [A4988](https://drive.google.com/open?id=1uaHy-gVYzntSpmbj-RvlSXfdfeH-IRd8). Controller CPU based on 10MHz [FlashLite NEC V25 SBC](https://lh5.googleusercontent.com/kj4iZ8OMkE5W92mf-GG1na3PRkUhlsCT2e-m8hr-VAq39MQ7tvtFeNA4bHNfKd3oUbItSMeTRnDGq1jqQkdHiuW65H7H5WfajjJDt6m5efU-0dvqxA=w1280) that is binary compatible with Intel 8088.
+Two TEAC 14769070-60 stepper motors, one for pan and one for tilt. Motor drivers use common micro-stepper driver [A4988](https://drive.google.com/open?id=1uaHy-gVYzntSpmbj-RvlSXfdfeH-IRd8). Controller CPU based on 10MHz [FlashLite NEC V25 SBC](https://lh5.googleusercontent.com/kj4iZ8OMkE5W92mf-GG1na3PRkUhlsCT2e-m8hr-VAq39MQ7tvtFeNA4bHNfKd3oUbItSMeTRnDGq1jqQkdHiuW65H7H5WfajjJDt6m5efU-0dvqxA=w1280) that is binary compatible with Intel 8088.  
+
+The pan-tilt system has a servo-position potentiate on the pan axis and a micro switch on the tilt axis. These a re used to center the pan axis and home the tilt axis.
 
 ## Stepper motor measurements
 
@@ -58,8 +81,3 @@ b. Current = 0.3 A/ phase
 c. Torque = 0.5 Kg.cm
 ```
 
-## TODO
-
-- Code Python controller + inverse kinematics
-- Application ideas: pointer, tracker, ultrasonic room mapper ...
-- Separate homing PID in 'pt-drver.c'?

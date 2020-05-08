@@ -67,7 +67,7 @@ class PTCMD(object):
 
 
     def __dir__(self):
-        return ['__init__', '__enter__', '__exit__', '__send_cmd', '__get_response', 'close', 'raw_command', 'home', 'get_position', 'get_analog_sensor', 'get_microsteps', 'move', 'sync', 'pan', 'tilt', 'wait', 'stop', 'version']
+        return ['__init__', '__enter__', '__exit__', '__send_cmd', '__get_response', 'close', 'raw_command', 'home', 'get_position', 'get_analog_sensor', 'get_microsteps', 'move', 'sync', 'pan', 'tilt', 'wait', 'stop', 'version', 'run']
 
 
     def __enter__(self):
@@ -253,4 +253,9 @@ class PTCMD(object):
         _, version = self.raw_command('version')
         return version[0]
 
+
+    def run(self, pan_rate, tilt_rate):
+        """Hack to send commands and not wait for response prompt."""
+
+        self.__send_cmd(f'sync {pan_rate} -1 {tilt_rate} -1')
 

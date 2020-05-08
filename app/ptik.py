@@ -74,13 +74,13 @@ def move_to_angle(alpha, theta, pan_pos = 0, tilt_pos = 0, base_rate = 500, obje
             theta_comp_deg = 0.0
 
     # Calculate tilt movement
-    tilt_steps = pan_steps + (int((theta - theta_comp_deg) / tilt_deg_per_step) - tilt_pos)
+    tilt_steps = pan_steps + (int(round((theta - theta_comp_deg) / tilt_deg_per_step)) - tilt_pos)
 
     # Calculate relative step rate per motor and output as list
     max_delta = max(abs(pan_steps), abs(tilt_steps))
 
     if max_delta > 0:
-        return (abs(pan_steps), abs(tilt_steps), int(base_rate * pan_steps / max_delta), int(base_rate * tilt_steps / max_delta))
+        return (abs(pan_steps), abs(tilt_steps), int(round(base_rate * pan_steps / max_delta)), int(round(base_rate * tilt_steps / max_delta)))
     else:
         return (-1, -1, 0, 0)
 
@@ -90,8 +90,8 @@ def angle_to_steps(alpha, theta):
     Convert position given as absolute angle relative to home to pan-tilt steps relative to home.
     Return conversion as a tuple.
     """
-    pan_steps = int(alpha / pan_deg_per_step)
-    tilt_steps = int(theta / tilt_deg_per_step)
+    pan_steps = int(round(alpha / pan_deg_per_step))
+    tilt_steps = int(round(theta / tilt_deg_per_step))
     return (pan_steps, tilt_steps)
 
 

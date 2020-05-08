@@ -9,7 +9,6 @@ YouTube: (https://youtu.be/LF1JT0Pmddc)
 
 ## System
 
-- Hardware [design and 3D print](https://grabcad.com/eyal.abraham-2/models)
 - Controller and [driver software](controller/README.md)
 - Python [applications and modules](app/README.md)
 

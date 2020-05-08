@@ -6,6 +6,13 @@ The applications connect to the pan-tilt system controller through a simple seri
 
 ## Applications
 
+- ```home.py``` simple homing command
+- ```test1.py``` a conical scan of the sensor mount
+- ```test2.py``` a series of pan-tilt commands
+- ```camtest.py``` OpenCV webcam capture and display test
+- ```objtracker.py``` object tracker with webcam
+- ```facetrack.py``` face or faces detection and tracking with webcam
+
 ## Library modules
 
 - ```ptcmd.py``` command interface to the pan-tilt controller
@@ -13,5 +20,6 @@ The applications connect to the pan-tilt system controller through a simple seri
 
 ## Dependencies
 
-See ```requirements.txt``` file
+- Python 3.6.9
+- See ```requirements.txt``` file
 
