@@ -64,13 +64,13 @@ def main():
     # PID constants for pan and tilt PID controller.
     # These constants are tuned for the worm-gear mechanical setup
     #
-    pan_P = 2.0
+    pan_P = 5.0
     pan_I = 0.0
-    pan_D = 0.0
+    pan_D = 1.0
     
     tilt_P = 8.0
     tilt_I = 0.0
-    tilt_D = 1.0
+    tilt_D = 2.0
 
     print(' m - mark color region to track\n t - track\n s - display tracking marker only\n ESC - quit')
 
@@ -220,7 +220,7 @@ def main():
             err_pan = exp_filter_pan(err_pan_i)
             err_tilt = exp_filter_tilt(err_tilt_i)
             control_pan = pid_pan(err_pan, pan_P, pan_I, pan_D)
-            control_tilt = pid_tilt(err_tilt, tilt_P, tilt_I, tilt_D)
+            control_tilt = pid_tilt(err_tilt, tilt_P, tilt_I, tilt_D) - control_pan
             
             # Uncomment one of the following lines
             # in order to isolate pan or tilt for PID tuning/testing

@@ -194,7 +194,7 @@ def main():
                 err_pan = exp_filter_pan(err_pan_i)
                 err_tilt = exp_filter_tilt(err_tilt_i)
                 control_pan = pid_pan(err_pan, pan_P, pan_I, pan_D)
-                control_tilt = pid_tilt(err_tilt, tilt_P, tilt_I, tilt_D)
+                control_tilt = pid_tilt(err_tilt, tilt_P, tilt_I, tilt_D) - control_pan
                 
                 # Uncomment one of the following lines
                 # in order to isolate pan or tilt for PID tuning/testing
@@ -213,8 +213,7 @@ def main():
                 #print(f'{now:.2f},{err_tilt_i:.2f},{err_tilt:.2f},{control_tilt},{err_pan_i:.2f},{err_pan:.2f},{control_pan}')
 
         #
-        # If tracking is lost for some reason then display a red cross
-        # and stop the motors
+        # If tracking is lost stop the motors
         # TODO Smooth lapses in face detection that
         #      are sporadic and last less that TBD [mili-sec]
         #
