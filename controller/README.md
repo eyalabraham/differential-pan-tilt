@@ -33,7 +33,7 @@ The controller code is in module ```ptctrl.c```. The controller provides an inte
 
 ## Hardware
 
-Two TEAC 14769070-60 stepper motors, one for pan and one for tilt. Motor drivers use common micro-stepper driver [A4988](https://drive.google.com/open?id=1uaHy-gVYzntSpmbj-RvlSXfdfeH-IRd8). Controller CPU based on 10MHz [FlashLite NEC V25 SBC](https://lh5.googleusercontent.com/kj4iZ8OMkE5W92mf-GG1na3PRkUhlsCT2e-m8hr-VAq39MQ7tvtFeNA4bHNfKd3oUbItSMeTRnDGq1jqQkdHiuW65H7H5WfajjJDt6m5efU-0dvqxA=w1280) that is binary compatible with Intel 8088.  
+Two TEAC 14769070-60 stepper motors, one for pan and one for tilt. Motor drivers use common micro-stepper driver [A4988](https://drive.google.com/open?id=1uaHy-gVYzntSpmbj-RvlSXfdfeH-IRd8). Controller CPU based on 10MHz [FlashLite NEC V25 SBC](https://sites.google.com/site/eyalabraham/robotics#h.p_ID_544) that is binary compatible with Intel 8088.  
 
 The pan-tilt system has a servo-position potentiate on the pan axis and a micro switch on the tilt axis. These are used to center the pan axis and home the tilt axis.  
 

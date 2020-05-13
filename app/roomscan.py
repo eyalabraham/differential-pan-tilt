@@ -29,7 +29,7 @@ def main():
     """
 
     r = np.arange(-90, 90, 2)
-    tilt = 0
+    tilt = 22.5
 
     with ptcmd.PTCMD(baud=57600) as controller:
 
