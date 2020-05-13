@@ -51,7 +51,6 @@ endif
 #  -s   no stack frame check
 #  -oi  inline generation of certain functions
 #  -zp1 pack strutures
-#  -zu  ** removed ** SS == DS in small memory model
 #  -ms  small memory model
 #
 CCOPT = -0 -ms $(CCDBG) -zp1 -s -oi -i=/home/eyal/bin/watcom/h -i=$(INCDIR)

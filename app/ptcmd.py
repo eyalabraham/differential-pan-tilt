@@ -175,7 +175,7 @@ class PTCMD(object):
         """
 
         _, conversion = self.raw_command(f'get a2d {channel}')
-        return conversion[0]
+        return int(conversion[0])
 
 
     def get_microsteps(self):
@@ -184,7 +184,7 @@ class PTCMD(object):
         """
 
         _, microsteps = self.raw_command('get microsteps')
-        return microsteps[0]
+        return int(microsteps[0])
 
 
     def move(self, motor, rate, steps):

@@ -70,6 +70,8 @@
 ****************************************************************************/
 #define     __VERSION__     "1.0"
 
+#define     SIGN(n)         ((n > 0) ? +1 : ((n < 0) ? -1 : 0))
+
 // Driver micro-step hard-coded
 #define     MICRO_STEP      8       // 4, 8, or 16
 
@@ -138,6 +140,7 @@
 
 #define     RATE_LIMIT      2500    // Max step rate (mechanical limit)
 #define     TILT_HOME_RATE  150     // Steps per second
+#define     PAN_HOME_RATE   150
 
 /* *** To modify these definitions only change the degrees setting ***
  */
@@ -187,6 +190,8 @@ extern void driver_isr(void);
   Globals
 ****************************************************************************/
 static struct SFR __far *pSfr;
+
+static uint8_t channel_id[] = {0x00, 0x40, 0x10, 0x50, 0x20, 0x60, 0x30, 0x70};
 
 volatile uint16_t   timer_ticks = 0;    // clock timer ticks, increment at PID_FREQ [Hz]
 volatile stepctrl_t motors[MOTOR_COUNT] = {
@@ -446,9 +451,7 @@ int motor_get_position(motor_t motor)
  * Pan analog position is read from a 360-deg position potentiometer,
  * and home point is controlled with a simple PID loop.
  *
- * TODO Extract turret position PID to a general function
- *
- * param:   nothing
+ * param:   Pan and tilt offset adjustment in steps
  * return:  nothing
  *
  */
@@ -456,7 +459,7 @@ int motor_get_position(motor_t motor)
 #define     HOME_I      0
 #define     HOME_D      0
 
-void sys_home(void)
+void sys_home(int pan_offset, int tilt_offset)
 {
     int         turn_dir;
     uint16_t    position;
@@ -525,6 +528,14 @@ void sys_home(void)
     motor_stop(MOTOR_PAN);
     motor_stop(MOTOR_TILT);
 
+    /* Apply optional pan offset
+     */
+    if ( pan_offset != 0 )
+    {
+        sys_pan(SIGN(pan_offset), PAN_HOME_RATE, abs(pan_offset));
+        sys_wait_stop(MOTOR_PAN);
+    }
+
     /* Home the tilt axis
      */
     motor_run(MOTOR_TILT, DIRECTION_CW, TILT_HOME_RATE, -1);
@@ -539,6 +550,14 @@ void sys_home(void)
     motor_run(MOTOR_TILT, DIRECTION_CCW, (2 * TILT_HOME_RATE), TILT_HOME_RESET);
 
     sys_wait_stop(MOTOR_TILT);  // Block until motor reaches starting position
+
+    /* Apply optional tilt offset
+     */
+    if ( tilt_offset != 0 )
+    {
+        sys_tilt(SIGN(tilt_offset) , TILT_HOME_RATE, abs(tilt_offset));
+        sys_wait_stop(MOTOR_TILT);
+    }
 
     _disable();
 
@@ -648,7 +667,7 @@ void sys_wait_all_stop(void)
  * return:  12-bit A-to-D conversion
  *
  */
-uint16_t sys_a2d_read(uint8_t channel)
+uint16_t sys_a2d_read(int channel)
 {
     uint8_t     i;
     uint8_t     control_byte;
@@ -660,7 +679,7 @@ uint16_t sys_a2d_read(uint8_t channel)
     /* Send control byte to select channel and
      * start the conversion
      */
-    control_byte = AD_CONTROL | (channel << 4);
+    control_byte = channel_id[channel] | AD_CONTROL;
     pSfr->port1 &= ~AD_CS;
     for ( i = 0; i < 8; i++ )
     {

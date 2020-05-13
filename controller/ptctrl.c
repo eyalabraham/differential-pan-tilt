@@ -21,11 +21,13 @@
   Module definitions
 ****************************************************************************/
 #define     VERSION                 "v1.0"
-#define     USAGE                   "Usage: ptctrl [-V | -h | -r <baud>]"
+#define     USAGE                   "Usage: ptctrl [-V | -h | -p <offset> | -t <offset> | -r <baud>]"
 #define     HELP                    USAGE                                                       \
                                     "\n"                                                        \
                                     "-V  version info\n"                                        \
                                     "-h  help\n"                                                \
+                                    "-p <offset> pan home offset\n"                             \
+                                    "-t <offset> tilt home offset\n"                            \
                                     "-r  set mode to remote with baud rate\n"                   \
                                     "    valid: '9600', '19200', '38400', '57600', '115200'\n"  \
                                     "    default without -r is 9600\n"
@@ -78,7 +80,9 @@ int  sign(int);
 /****************************************************************************
   Globals
 ****************************************************************************/
-int          interactive = 1;       // Print prompt if interactive mode
+int         interactive = 1;       // Print prompt if interactive mode
+int         pan_offset = 0;
+int         tilt_offset = 0;
 
 /* ----------------------------------------------------------------------------
  * main() control functions
@@ -96,7 +100,7 @@ int main(int argc, char* argv[])
 
     /* Parse command line variables
      */
-    while ( ( c = getopt(argc, argv, ":Vhr:")) != -1 )
+    while ( ( c = getopt(argc, argv, ":Vhp:t:r:")) != -1 )
     {
         switch ( c )
         {
@@ -107,6 +111,22 @@ int main(int argc, char* argv[])
             case 'h':
                 printf("%s\n", HELP);
                 return 0;
+
+            case 'p':
+                if ( !str2int(optarg, &pan_offset) )
+                {
+                    printf("Pan offset is not a proper integer\n");
+                    return 1;
+                }
+                break;
+
+            case 't':
+                if ( !str2int(optarg, &tilt_offset) )
+                {
+                    printf("Tilt offset is not a proper integer\n");
+                    return 1;
+                }
+                break;
 
             case 'r':
                 interactive = 0;
@@ -129,7 +149,7 @@ int main(int argc, char* argv[])
 
             case ':':
                 if ( optopt == 'r')
-                    printf( "'-%c' without baud parameter\n", optopt);
+                    printf( "'-%c' without parameter\n", optopt);
                 return 1;
 
             case '?':
@@ -159,7 +179,7 @@ int main(int argc, char* argv[])
     if ( interactive )
         print_str("Homing...\n");
 
-    sys_home();
+    sys_home(pan_offset, tilt_offset);
 
     /* Clear console and output banner message
      */
@@ -302,7 +322,7 @@ int process_cli(char *commandLine)
      */
     else if ( strcmp(tokens[0], "home") == 0 )
     {
-        sys_home();
+        sys_home(pan_offset, tilt_offset);
         return 0;
     }
 
@@ -335,7 +355,7 @@ int process_cli(char *commandLine)
             if ( intTemp < 0 || intTemp > 7 )
                 return -1;
 
-            vprint_str("%u\n", sys_a2d_read((uint8_t)intTemp));
+            vprint_str("%u\n", sys_a2d_read(intTemp));
             return 0;
         }
         else if ( strcmp(tokens[1], "microsteps") == 0 )

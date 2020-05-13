@@ -21,5 +21,6 @@ The applications connect to the pan-tilt system controller through a simple seri
 ## Dependencies
 
 - Python 3.6.9
+- ```matplotlib``` requires a GUI rendering backend such as ```python3-tk``` that may not be installed by default
 - See ```requirements.txt``` file
 

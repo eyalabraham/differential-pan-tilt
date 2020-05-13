@@ -53,12 +53,12 @@ int      motor_get_position(motor_t);                         // Return motor st
 #define  motor_ccw(m)    motor_set_direction(m, DIRECTION_CCW);
 
 // System controls
-void     sys_home(void);                                      // Home position for pan and tilt
+void     sys_home(int, int);                                  // Home position for pan and tilt
 int      sys_pan(direction_t, int, int);                      // Pan in direction at rate with optional step count
 int      sys_tilt(direction_t, int, int);                     // Tilt in direction at rate with optional step count
 void     sys_wait_stop(motor_t);                              // Wait for motor to stop moving
 void     sys_wait_all_stop(void);                             // Wait for all motors to stop moving
-uint16_t sys_a2d_read(uint8_t);                               // Read and D-to-A channel
+uint16_t sys_a2d_read(int);                                   // Read and D-to-A channel
 int      sys_get_microsteps(void);                            // Get micro-step setting (hard-coded)
 int      sys_limit_switch(void);                              // Return state of limit switch
 

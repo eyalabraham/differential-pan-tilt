@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
     timer_isr_init();
 
     printf("Homing.\n");
-    sys_home();
+    sys_home(0, 0);
     wait(2000);
 
     printf("Moving.\n");
