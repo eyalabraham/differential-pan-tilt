@@ -3,7 +3,7 @@ cycler==0.10.0
 kiwisolver==1.2.0
 matplotlib==3.2.1
 numpy==1.18.3
-opencv-contrib-python==4.2.0.34
+opencv-contrib-python==4.8.1.78
 opencv-python==4.2.0.34
 pyparsing==2.4.7
 pyserial==3.4
